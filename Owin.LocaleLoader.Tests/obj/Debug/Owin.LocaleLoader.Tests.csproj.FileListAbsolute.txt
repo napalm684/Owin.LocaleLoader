@@ -1,0 +1,7 @@
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\bin\Debug\Owin.LocaleLoader.Tests.dll
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\bin\Debug\Owin.LocaleLoader.Tests.pdb
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\obj\Debug\Owin.LocaleLoader.Tests.csprojResolveAssemblyReference.cache
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\obj\Debug\Owin.LocaleLoader.Tests.dll
+C:\dev\Owin.LocaleLoader\Owin.LocaleLoader.Tests\obj\Debug\Owin.LocaleLoader.Tests.pdb
