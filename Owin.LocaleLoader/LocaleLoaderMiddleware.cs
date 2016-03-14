@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Owin;
 using Napalm684.Owin.LocaleLoader.Services;
-using MiddlewareResources = Napalm684.Owin.LocaleLoader.Resources.Resources;
 
 namespace Napalm684.Owin.LocaleLoader
 {
@@ -15,8 +15,8 @@ namespace Napalm684.Owin.LocaleLoader
     {
         private const string AcceptLanguage = "Accept-Language";
 
-        protected readonly OwinMiddleware _next;
-        protected readonly LocaleLoaderOptions _options;
+        protected readonly OwinMiddleware Next;
+        protected readonly LocaleLoaderOptions Options;
 
         /// <summary>
         /// Default constructor
@@ -25,7 +25,7 @@ namespace Napalm684.Owin.LocaleLoader
         /// <param name="options">Locale Loader Options</param>
         public LocaleLoaderMiddleware(OwinMiddleware next, LocaleLoaderOptions options) : base(next)
         {
-            _options = options;
+            Options = options;
         }
 
         /// <summary>
@@ -35,15 +35,15 @@ namespace Napalm684.Owin.LocaleLoader
         /// <returns>Task</returns>
         public override async Task Invoke(IOwinContext context)
         {
-            if (context.Request.Path.Value.Contains(_options.LocalePlaceholderScript))
+            if (context.Request.Path.Value.Contains(Options.LocalePlaceholderScript))
             {
-                if (_options.DependencyResolver == null)
+                if (Options.DependencyResolver == null)
                     UtilizeBrowsersLocale(context.Request);
                 else
                     UtilizeServicesLocale(context.Request);
             }
 
-            await _next.Invoke(context);
+            await Next.Invoke(context);
         }
 
         /// <summary>
@@ -53,16 +53,10 @@ namespace Napalm684.Owin.LocaleLoader
         /// <param name="owinRequest">Request</param>
         protected void UtilizeBrowsersLocale(IOwinRequest owinRequest)
         {
-            var acceptLangValues = owinRequest.Headers.GetValues(AcceptLanguage);
-            var locale = string.Empty;
+            var locale = GetLocaleCodeFromHeaders(owinRequest.Headers);
 
-            if (acceptLangValues == null) throw new NullReferenceException(MiddlewareResources.MISSING_ACCEPT_LANG);
-
-            ///TODO: Loop through or get first/default to use
-            throw new NotImplementedException();
-
-            owinRequest.Path.Value.Replace(_options.LocalePlaceholderScript,
-                UpdateScriptName(_options.ActualLocaleScript, locale));
+            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(Options.LocalePlaceholderScript,
+                UpdateScriptName(Options.ActualLocaleScript, locale)));
         }
 
         /// <summary>
@@ -72,11 +66,11 @@ namespace Napalm684.Owin.LocaleLoader
         /// <param name="owinRequest">Request</param>
         protected void UtilizeServicesLocale(IOwinRequest owinRequest)
         {
-            var service = _options.DependencyResolver.GetService(typeof(ILocaleService)) as ILocaleService;
+            var service = Options.DependencyResolver.GetService(typeof(ILocaleService)) as ILocaleService;
             var locale = service.GetLocale();
 
-            owinRequest.Path.Value.Replace(_options.LocalePlaceholderScript,
-                UpdateScriptName(_options.ActualLocaleScript, locale));
+            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(Options.LocalePlaceholderScript,
+                UpdateScriptName(Options.ActualLocaleScript, locale)));
         }
 
         /// <summary>
@@ -85,9 +79,22 @@ namespace Napalm684.Owin.LocaleLoader
         /// <param name="actualScript">Actual Script with Parameter Placeholder</param>
         /// <param name="locale">Locale</param>
         /// <returns>Actual Script Name</returns>
-        private static string UpdateScriptName(string actualScript, string locale)
+        private string UpdateScriptName(string actualScript, string locale)
         {
             return String.Format(actualScript, locale);
+        }
+
+        /// <summary>
+        /// Get Locale Code from header dictionary
+        /// </summary>
+        /// <param name="headers">Request Headers</param>
+        /// <returns></returns>
+        private string GetLocaleCodeFromHeaders(IHeaderDictionary headers)
+        {
+            const string semicolon = ";";
+            var acceptLangs = headers.GetCommaSeparatedValues(AcceptLanguage);
+            var localeCode = acceptLangs.FirstOrDefault();
+            return localeCode.Contains(semicolon) ? localeCode.Split(semicolon.ToCharArray())[0] : localeCode;
         }
     }
 }
