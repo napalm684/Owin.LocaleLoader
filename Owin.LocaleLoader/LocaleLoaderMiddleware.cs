@@ -14,8 +14,6 @@ namespace Napalm684.Owin.LocaleLoader
     public class LocaleLoaderMiddleware : OwinMiddleware
     {
         private const string AcceptLanguage = "Accept-Language";
-
-        protected readonly OwinMiddleware Next;
         protected readonly LocaleLoaderOptions Options;
 
         /// <summary>
