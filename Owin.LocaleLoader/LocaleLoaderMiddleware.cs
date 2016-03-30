@@ -14,6 +14,10 @@ namespace Napalm684.Owin.LocaleLoader
     public class LocaleLoaderMiddleware : OwinMiddleware
     {
         private const string AcceptLanguage = "Accept-Language";
+
+        /// <summary>
+        /// Middleware Options
+        /// </summary>
         protected readonly LocaleLoaderOptions Options;
 
         /// <summary>
@@ -33,13 +37,15 @@ namespace Napalm684.Owin.LocaleLoader
         /// <returns>Task</returns>
         public override async Task Invoke(IOwinContext context)
         {
-            if (context.Request.Path.Value.Contains(Options.LocalePlaceholderScript))
+            Options.LocaleMappings.Keys.ToList().ForEach(x =>
             {
+                if (!context.Request.Path.Value.Contains(x)) return;
+
                 if (Options.DependencyResolver == null)
-                    UtilizeBrowsersLocale(context.Request);
+                    UtilizeBrowsersLocale(context.Request, x);
                 else
-                    UtilizeServicesLocale(context.Request);
-            }
+                    UtilizeServicesLocale(context.Request, x, context.Authentication.User.Identity.Name);
+            });
 
             await Next.Invoke(context);
         }
@@ -49,37 +55,42 @@ namespace Napalm684.Owin.LocaleLoader
         /// the given browser accept-language header
         /// </summary>
         /// <param name="owinRequest">Request</param>
-        protected void UtilizeBrowsersLocale(IOwinRequest owinRequest)
+        /// <param name="placeholder">Placeholder file</param>
+        protected void UtilizeBrowsersLocale(IOwinRequest owinRequest, string placeholder)
         {
             var locale = GetLocaleCodeFromHeaders(owinRequest.Headers);
+            string actualLocaleFile;
 
-            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(Options.LocalePlaceholderScript,
-                UpdateScriptName(Options.ActualLocaleScript, locale)));
+            Options.LocaleMappings.TryGetValue(placeholder, out actualLocaleFile);
+            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(placeholder, UpdateFileName(actualLocaleFile, locale)));
         }
 
         /// <summary>
         /// Updates OwinRequest Path to the location of the locale specific file for
-        /// the value retrieved by the injected culture service
+        /// the value retrieved by the injected culture service/passed user name
         /// </summary>
         /// <param name="owinRequest">Request</param>
-        protected void UtilizeServicesLocale(IOwinRequest owinRequest)
+        /// <param name="placeholder">Placeholder file</param>
+        /// <param name="userName">User Name</param>
+        protected void UtilizeServicesLocale(IOwinRequest owinRequest, string placeholder, string userName)
         {
             var service = Options.DependencyResolver.GetService(typeof(ILocaleService)) as ILocaleService;
-            var locale = service.GetLocale();
+            var locale = service.GetLocale(userName);
 
-            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(Options.LocalePlaceholderScript,
-                UpdateScriptName(Options.ActualLocaleScript, locale)));
+            string actualLocaleFile;
+            Options.LocaleMappings.TryGetValue(placeholder, out actualLocaleFile);
+            owinRequest.Path = new PathString(owinRequest.Path.Value.Replace(placeholder, UpdateFileName(actualLocaleFile, locale)));
         }
 
         /// <summary>
-        /// Updates actual script name with passed locale
+        /// Updates actual file name with passed locale
         /// </summary>
-        /// <param name="actualScript">Actual Script with Parameter Placeholder</param>
+        /// <param name="actual">Actual file with Parameter Placeholder</param>
         /// <param name="locale">Locale</param>
-        /// <returns>Actual Script Name</returns>
-        private string UpdateScriptName(string actualScript, string locale)
+        /// <returns>Actual file Name</returns>
+        private string UpdateFileName(string actual, string locale)
         {
-            return String.Format(actualScript, locale);
+            return String.Format(actual, locale);
         }
 
         /// <summary>
@@ -92,7 +103,7 @@ namespace Napalm684.Owin.LocaleLoader
             const string semicolon = ";";
             var acceptLangs = headers.GetCommaSeparatedValues(AcceptLanguage);
             var localeCode = acceptLangs.FirstOrDefault();
-            return localeCode.Contains(semicolon) ? localeCode.Split(semicolon.ToCharArray())[0] : localeCode;
+            return localeCode != null && localeCode.Contains(semicolon) ? localeCode.Split(semicolon.ToCharArray())[0] : localeCode;
         }
     }
 }

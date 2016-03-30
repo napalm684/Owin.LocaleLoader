@@ -7,9 +7,10 @@
     {
         /// <summary>
         /// Retrieves desired locale code for use as a replacement parameter 
-        /// in the actual locale specific script name 
+        /// in the actual locale specific file name 
         /// </summary>
-        /// <returns></returns>
-        string GetLocale();
+        /// <param name="parameters">Parameters</param>
+        /// <returns>Locale Designator</returns>
+        string GetLocale(params object[] parameters);
     }
 }

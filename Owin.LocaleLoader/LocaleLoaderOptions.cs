@@ -1,4 +1,5 @@
-﻿using Napalm684.Owin.LocaleLoader.Dependencies;
+﻿using System.Collections.Generic;
+using Napalm684.Owin.LocaleLoader.Dependencies;
 
 namespace Napalm684.Owin.LocaleLoader
 {
@@ -8,18 +9,21 @@ namespace Napalm684.Owin.LocaleLoader
     public class LocaleLoaderOptions
     {
         /// <summary>
-        /// Locale neutral placeholder script file name
+        /// Locale Mappings Dictionary
         /// </summary>
-        public string LocalePlaceholderScript { get; set; }
-
-        /// <summary>
-        /// Locale specific file name (initially with placeholder {0} for updating by middleware)
-        /// </summary>
-        public string ActualLocaleScript { get; set; }
+        public Dictionary<string, string> LocaleMappings { get; set; }
 
         /// <summary>
         /// Dependency Resolver
         /// </summary>
         public IDependencyResolver DependencyResolver { get; set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public LocaleLoaderOptions()
+        {
+            LocaleMappings = new Dictionary<string, string>();
+        }
     }
 }

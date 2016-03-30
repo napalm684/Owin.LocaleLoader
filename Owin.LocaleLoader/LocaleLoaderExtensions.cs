@@ -23,15 +23,17 @@ namespace Napalm684.Owin.LocaleLoader
         /// Use the locale loader with the browser accept-language providing the locale
         /// </summary>
         /// <param name="appBuilder">App Builder</param>
-        /// <param name="localePlaceholderScript">Locale Placeholder Script</param>
-        /// <param name="actualLocaleScript">Actual Locale Specific script initially with string parameter</param>
+        /// <param name="localePlaceholder">Locale Placeholder file</param>
+        /// <param name="actualLocale">Actual Locale Specific file initially with string parameter</param>
         /// <returns>App Builder</returns>
-        public static IAppBuilder UseLocaleLoader(this IAppBuilder appBuilder, string localePlaceholderScript, string actualLocaleScript)
+        public static IAppBuilder UseLocaleLoader(this IAppBuilder appBuilder, string localePlaceholder, string actualLocale)
         {
             return appBuilder.Use(typeof(LocaleLoaderMiddleware), 
                 new LocaleLoaderOptions {
-                    LocalePlaceholderScript = localePlaceholderScript,
-                    ActualLocaleScript = actualLocaleScript
+                    LocaleMappings =
+                    {
+                        { localePlaceholder, actualLocale }
+                    }
                 });
         }
     }
