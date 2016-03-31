@@ -49,5 +49,15 @@
         /// Unmapped placeholder file
         /// </summary>
         public const string UnmappedPlaceholder = "dummy.js";
+
+        /// <summary>
+        /// Test Parameter
+        /// </summary>
+        public const string TestParameter = "test_param";
+
+        ///<summary>
+        /// User Name
+        ///</summary>s
+        public const string UserName = "username@domain.local";
     }
 }

@@ -27,7 +27,7 @@ namespace Napalm684.Owin.LocaleLoader.Tests.Helpers
         public override async Task Invoke(IOwinContext context)
         {
             var identity = A.Fake<IIdentity>();
-            A.CallTo(() => identity.Name).Returns("username@domain.local");
+            A.CallTo(() => identity.Name).Returns(LocaleLoaderConstants.UserName);
             var user = new ClaimsPrincipal(identity);
             context.Request.Context.Authentication.User = user;
             await Next.Invoke(context);

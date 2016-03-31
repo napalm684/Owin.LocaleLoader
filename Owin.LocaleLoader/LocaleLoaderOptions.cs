@@ -14,6 +14,11 @@ namespace Napalm684.Owin.LocaleLoader
         public Dictionary<string, string> LocaleMappings { get; set; }
 
         /// <summary>
+        /// Optional parameters for locale service
+        /// </summary>
+        public object[] Parameters { get; set; }
+
+        /// <summary>
         /// Dependency Resolver
         /// </summary>
         public IDependencyResolver DependencyResolver { get; set; }

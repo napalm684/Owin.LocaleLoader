@@ -44,7 +44,7 @@ namespace Napalm684.Owin.LocaleLoader
                 if (Options.DependencyResolver == null)
                     UtilizeBrowsersLocale(context.Request, x);
                 else
-                    UtilizeServicesLocale(context.Request, x, context.Authentication.User.Identity.Name);
+                    UtilizeServicesLocale(context.Request, x, GetParameters(context.Authentication.User.Identity.Name, Options.Parameters));
             });
 
             await Next.Invoke(context);
@@ -71,11 +71,11 @@ namespace Napalm684.Owin.LocaleLoader
         /// </summary>
         /// <param name="owinRequest">Request</param>
         /// <param name="placeholder">Placeholder file</param>
-        /// <param name="userName">User Name</param>
-        protected void UtilizeServicesLocale(IOwinRequest owinRequest, string placeholder, string userName)
+        /// <param name="parameters">Parameters</param>
+        protected void UtilizeServicesLocale(IOwinRequest owinRequest, string placeholder, object[] parameters)
         {
             var service = Options.DependencyResolver.GetService(typeof(ILocaleService)) as ILocaleService;
-            var locale = service.GetLocale(userName);
+            var locale = service.GetLocale(parameters);
 
             string actualLocaleFile;
             Options.LocaleMappings.TryGetValue(placeholder, out actualLocaleFile);
@@ -104,6 +104,18 @@ namespace Napalm684.Owin.LocaleLoader
             var acceptLangs = headers.GetCommaSeparatedValues(AcceptLanguage);
             var localeCode = acceptLangs.FirstOrDefault();
             return localeCode != null && localeCode.Contains(semicolon) ? localeCode.Split(semicolon.ToCharArray())[0] : localeCode;
+        }
+
+        /// <summary>
+        /// Combine parameters passed in LocaleLoaderOptions with user name from authenticated OWIN Request
+        /// </summary>
+        /// <param name="userName">Authenticated User</param>
+        /// <param name="parameters">Parameters</param>
+        /// <returns></returns>
+        private object[] GetParameters(string userName, object[] parameters)
+        {
+            var userNameParameter = new object[] { userName };
+            return parameters == null ? userNameParameter : userNameParameter.Concat(parameters).ToArray();
         }
     }
 }

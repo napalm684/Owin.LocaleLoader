@@ -18,6 +18,18 @@ namespace Napalm684.Owin.LocaleLoader.Tests
     [TestClass]
     public class LocaleLoaderMiddlewareTests
     {
+        private ILocaleService _fakeLocaleService;
+
+        /// <summary>
+        /// Initialize items for testing
+        /// </summary>
+        [TestInitialize]
+        public void Initialize()
+        {
+            _fakeLocaleService = A.Fake<FakeLocaleService>();
+            A.CallTo(() => _fakeLocaleService.GetLocale(A<object[]>.Ignored)).CallsBaseMethod();
+        }
+
         /// <summary>
         /// Test using a fake locale service as the locale provider
         /// </summary>
@@ -27,7 +39,7 @@ namespace Napalm684.Owin.LocaleLoader.Tests
         {
             //Arrange
             var resolver = A.Fake<IDependencyResolver>();
-            A.CallTo(() => resolver.GetService(typeof(ILocaleService))).Returns(new FakeLocaleService());
+            A.CallTo(() => resolver.GetService(typeof(ILocaleService))).Returns(_fakeLocaleService);
 
             using (var server = TestServer.Create(app =>
             {
@@ -53,6 +65,51 @@ namespace Napalm684.Owin.LocaleLoader.Tests
 
                 //Assert
                 A.CallTo(() => resolver.GetService(typeof(ILocaleService))).MustHaveHappened(Repeated.Exactly.Once);
+                A.CallTo(() => _fakeLocaleService.GetLocale(A<object[]>.That.Matches(x => x.Length == 1 && (string)x[0] == LocaleLoaderConstants.UserName))).MustHaveHappened(Repeated.Exactly.Once);
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+                Assert.AreEqual(LocaleLoaderConstants.FilePath + String.Format(LocaleLoaderConstants.Actual, LocaleLoaderConstants.LocaleSpecific), await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        /// <summary>
+        /// Test using a fake locale service as the locale provider
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Task LocaleLoaderMiddleware_Service_Additional_Parameters()
+        {
+            //Arrange
+            var resolver = A.Fake<IDependencyResolver>();
+            A.CallTo(() => resolver.GetService(typeof(ILocaleService))).Returns(_fakeLocaleService);
+
+            using (var server = TestServer.Create(app =>
+            {
+                app.Use(typeof(FakeLoginMiddleware));
+
+                app.UseLocaleLoader(new LocaleLoaderOptions()
+                {
+                    LocaleMappings =
+                    {
+                        { LocaleLoaderConstants.Placeholder, LocaleLoaderConstants.Actual }
+                    },
+                    DependencyResolver = resolver,
+                    Parameters = new object[]{ LocaleLoaderConstants.TestParameter }
+                });
+
+                app.Run(async ctx =>
+                {
+                    await ctx.Response.WriteAsync(ctx.Request.Path.Value);
+                });
+            }))
+            {
+                //Act
+                var response = await server.CreateRequest(LocaleLoaderConstants.FilePath + LocaleLoaderConstants.Placeholder).GetAsync();
+
+                //Assert
+                A.CallTo(() => resolver.GetService(typeof(ILocaleService))).MustHaveHappened(Repeated.Exactly.Once);
+                A.CallTo(() => _fakeLocaleService.GetLocale(A<object[]>.That.Matches(x => x.Length == 2 && 
+                                                            (string)x[0] == LocaleLoaderConstants.UserName &&
+                                                            (string)x[1] == LocaleLoaderConstants.TestParameter))).MustHaveHappened(Repeated.Exactly.Once);
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
                 Assert.AreEqual(LocaleLoaderConstants.FilePath + String.Format(LocaleLoaderConstants.Actual, LocaleLoaderConstants.LocaleSpecific), await response.Content.ReadAsStringAsync());
             }

@@ -13,7 +13,7 @@ namespace Napalm684.Owin.LocaleLoader.Tests.Helpers
         /// </summary>
         /// <param name="parameters">Parameters</param>
         /// <returns>Locale Designator</returns>
-        public string GetLocale(params object[] parameters)
+        public virtual string GetLocale(params object[] parameters)
         {
             return LocaleLoaderConstants.LocaleSpecific;
         }
