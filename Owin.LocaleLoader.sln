@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.LocaleLoader", "Owin.LocaleLoader\Owin.LocaleLoader.csproj", "{9C0A6508-1336-4510-B32A-00A5DAFEC01D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.LocaleLoader.Tests", "Owin.LocaleLoader.Tests\Owin.LocaleLoader.Tests.csproj", "{3161F493-B5A2-4961-AA7D-A174A46B7936}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C85AD0B0-5961-4DCC-BFC9-DFDD3435E414}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
