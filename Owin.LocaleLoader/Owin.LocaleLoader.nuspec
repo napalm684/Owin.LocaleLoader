@@ -1,0 +1,26 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Napalm684.Owin.LocaleLoader</id>
+    <version>1.0.0.0</version>
+    <title>Owin.LocaleLoader</title>
+    <authors>Shawn Vause</authors>
+    <owners>Shawn Vause</owners>
+    <licenseUrl>https://github.com/napalm684/Owin.LocaleLoader/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/napalm684/Owin.LocaleLoader</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>OWIN Middleware component to replace generic Http Requested files with locale specific files</description>
+    <releaseNotes>Initial Version</releaseNotes>
+    <copyright>Shawn Vause 2016</copyright>
+    <tags>owin locale loader middleware</tags>
+    <dependencies>
+      <dependency id="Owin" version="1.0.0.0" />
+      <dependency id="Microsoft.Owin" version="3.0.1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Napalm684.Owin.LocaleLoader.dll" target="lib\net45\Napalm684.Owin.LocaleLoader.dll" />
+    <file src="bin\Release\Napalm684.Owin.LocaleLoader.pdb" target="lib\net45\Napalm684.Owin.LocaleLoader.pdb" />
+    <file src="bin\Release\Napalm684.Owin.LocaleLoader.xml" target="lib\net45\Napalm684.Owin.LocaleLoader.xml" />
+  </files>
+</package>
