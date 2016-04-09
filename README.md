@@ -1,21 +1,5 @@
-<style>
-    .header img {
-      float: left;
-      width: 100px;
-      height: 100px;
-      background: #555;
-    }
-
-    .header h1 {
-      position: relative;
-      top: 18px;
-      left: 10px;
-    }
-</style>
-
-<div class="header">
+<div>
     <img src="https://raw.githubusercontent.com/napalm684/Owin.LocaleLoader/master/Owin.LocaleLoader.png" alt="logo" />
-    <br/>
     <h1>Owin.LocaleLoader</h1>
 </div>
 <br/>
