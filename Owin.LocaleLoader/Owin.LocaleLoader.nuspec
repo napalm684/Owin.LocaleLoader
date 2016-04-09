@@ -8,6 +8,7 @@
     <owners>Shawn Vause</owners>
     <licenseUrl>https://github.com/napalm684/Owin.LocaleLoader/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/napalm684/Owin.LocaleLoader</projectUrl>
+    <iconUrl>https://github.com/napalm684/Owin.LocaleLoader/blob/master/Owin.LocaleLoader.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>OWIN Middleware component to replace generic Http Requested files with locale specific files</description>
     <releaseNotes>Initial Version</releaseNotes>
@@ -19,8 +20,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\Napalm684.Owin.LocaleLoader.dll" target="lib\net45\Napalm684.Owin.LocaleLoader.dll" />
-    <file src="bin\Release\Napalm684.Owin.LocaleLoader.pdb" target="lib\net45\Napalm684.Owin.LocaleLoader.pdb" />
-    <file src="bin\Release\Napalm684.Owin.LocaleLoader.xml" target="lib\net45\Napalm684.Owin.LocaleLoader.xml" />
+    <file src="bin\Release\net45\Napalm684.Owin.LocaleLoader.dll" target="lib\net45\Napalm684.Owin.LocaleLoader.dll" />
+    <file src="bin\Release\net45\Napalm684.Owin.LocaleLoader.pdb" target="lib\net45\Napalm684.Owin.LocaleLoader.pdb" />
+    <file src="bin\Release\net45\Napalm684.Owin.LocaleLoader.xml" target="lib\net45\Napalm684.Owin.LocaleLoader.xml" />
+    <file src="bin\Release\net461\Napalm684.Owin.LocaleLoader.dll" target="lib\net461\Napalm684.Owin.LocaleLoader.dll" />
+    <file src="bin\Release\net461\Napalm684.Owin.LocaleLoader.pdb" target="lib\net461\Napalm684.Owin.LocaleLoader.pdb" />
+    <file src="bin\Release\net461\Napalm684.Owin.LocaleLoader.xml" target="lib\net461\Napalm684.Owin.LocaleLoader.xml" />
   </files>
 </package>
