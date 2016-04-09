@@ -2,9 +2,7 @@
     <img src="https://raw.githubusercontent.com/napalm684/Owin.LocaleLoader/master/Owin.LocaleLoader.png" alt="logo" />
     <h1>Owin.LocaleLoader</h1>
 </div>
-<br/>
-<p>OWIN Middleware component to replace generic Http Requested files with locale specific files.</p>
-
+OWIN Middleware component to replace generic Http Requested files with locale specific files.
 ### Motivation
 
 Are you developing a single-page application (SPA) featuring an ASP.Net backend and you want to eliminate the heavy/unnecessary MVC dependency?
@@ -72,12 +70,12 @@ app.UseLocaleLoader(new LocaleLoaderOptions
 });
 ```
 
-With the middleware in place (see first overload demonstrated), a request containing <span style="font-style: italic;">script.js</span>
-in the path value will be intercepted by the LocaleLoader, thus changing the request path to have the file name <span style="font-style: italic;">script1-en-US.js</span> (for a browser with the accept-language header value en-US (United States of America - English)).
+With the middleware in place (see first overload demonstrated), a request containing script.js
+in the path value will be intercepted by the LocaleLoader, thus changing the request path to have the file name script-en-US.js (for a browser with the accept-language header value en-US (United States of America - English)).
 Obviously, the same logic will occur when there are multiple mappings pairing placeholders with locale specific files.  Pretty neat huh?
 
 ***
 
 ### Locale Service Based
 
-<span style="font-style: italic">Coming soon...</span>
+Coming soon...
