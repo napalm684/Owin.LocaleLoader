@@ -10,8 +10,8 @@ Is your SPA written with a framework like AngularJS that has an i18n internation
 Do you want to provide a different style sheet specific to a given user group?
 Then you came to the right place!  This nuget library provides an OWIN middleware component to load named files dynamically via two methods:
     
-* Browser culture/locale settings (Accept-Language header) or 
-* A custom locale service implementation (for your specific scenario).
+* Browser culture/locale settings (Accept-Language header) 
+* A custom locale service implementation (for your specific scenario)
 
 #### Prerequisites
 
