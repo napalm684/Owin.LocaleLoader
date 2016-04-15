@@ -78,4 +78,67 @@ Obviously, the same logic will occur when there are multiple mappings pairing pl
 
 ### Locale Service Based
 
-Coming soon...
+####Setup
+
+In your OWIN Startup class use the fully specified LocaleLoaderOptions extension method:
+
+```
+//Dependency Resolver
+public class UnityDependencyResolver: Napalm684.Owin.LocaleLoader.Dependencies.IDependencyResolver
+{
+    protected IUnityContainer _container; //Or your favorite DI framework if Unity is not your preference
+    
+    public UnityDependencyResolver()
+    {
+        _container = new UnityContainer();
+        
+        /* Register dependencies for the container somewhere, in our case one for type
+           Napalm684.Owin.LocaleLoader.Services.ILocaleService */         
+    }
+    
+    object GetService(Type serviceType)
+    {
+        try
+        {
+            return _container.Resolve(serviceType);
+        }
+        catch (ResolutionFailedException)
+        {
+            return null;
+        }        
+    }
+}
+
+//Startup Code
+app.UseLocaleLoader(new LocaleLoaderOptions
+{
+    LocaleMappings =
+    {
+        { "script.js", "script-{0}.js" }
+    },
+    DependencyResolver = new UnityDependencyResolver(),
+    Parameters = new object[] { /* Parameters to pass to ILocaleService */ }
+});
+```
+
+File(s) specified in LocaleMappings will now be resolved per the parameter(s) passed to the ILocaleService.GetLocale(params object[] parameters) method you implemented
+in your custom ILocaleService.
+
+Example ILocaleService:
+
+```
+public class MyLocaleService: Napalm684.Owin.LocaleLoader.Services.ILocaleService
+{
+    private readonly IRepository<User> _repository;
+    
+    string GetLocale(params object[] parameters)
+    {
+        return _repository.GetUserLocale(parameters[0] as string);
+    }
+}
+```
+
+Items to note about the above example, for simplicity some details have been removed.  Also, be aware that parameters[0] is always the user name authenticated
+by the application.  You can use it or not, but it will be populated in the middleware with the value (or lack of value if not provided) for context.Authentication.User.Identity.Name.
+Thus, the sample implementation uses a repository to read the locale of the user name logged into the system.  The parameters give developers the flexibility to
+implement this service however they see fit, whether it's a locale or not is up to you!
