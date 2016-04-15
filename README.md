@@ -82,8 +82,8 @@ Obviously, the same logic will occur when there are multiple mappings pairing pl
 
 In your OWIN Startup class use the fully specified LocaleLoaderOptions extension method with an implementation of the IDependencyResolver:
 
+Dependency Resolver:
 ```
-//Dependency Resolver
 public class UnityDependencyResolver: Napalm684.Owin.LocaleLoader.Dependencies.IDependencyResolver
 {
     protected IUnityContainer _container; //Or your favorite DI framework if Unity is not your preference
