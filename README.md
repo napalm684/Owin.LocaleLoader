@@ -80,7 +80,7 @@ Obviously, the same logic will occur when there are multiple mappings pairing pl
 
 ####Setup
 
-In your OWIN Startup class use the fully specified LocaleLoaderOptions extension method:
+In your OWIN Startup class use the fully specified LocaleLoaderOptions extension method with an implementation of the IDependencyResolver:
 
 ```
 //Dependency Resolver
