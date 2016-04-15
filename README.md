@@ -108,7 +108,9 @@ public class UnityDependencyResolver: Napalm684.Owin.LocaleLoader.Dependencies.I
         }        
     }
 }
+```
 
+```
 //Startup Code
 app.UseLocaleLoader(new LocaleLoaderOptions
 {
