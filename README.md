@@ -110,8 +110,8 @@ public class UnityDependencyResolver: Napalm684.Owin.LocaleLoader.Dependencies.I
 }
 ```
 
+OWIN Startup Code:
 ```
-//Startup Code
 app.UseLocaleLoader(new LocaleLoaderOptions
 {
     LocaleMappings =
