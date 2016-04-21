@@ -16,7 +16,7 @@ Then you came to the right place!  This nuget library provides an OWIN middlewar
 #### Prerequisites
 
 * OWIN based file host - <a href="https://www.nuget.org/packages/Microsoft.Owin.StaticFiles" title="Microsoft.Owin.StaticFiles">Microsoft.Owin.StaticFiles</a>
-* Install the <a href="http://www.nuget.org/packages/Napalm684.Owin.LocaleLoader/" target="_blank">nuget package</a>
+* Install the <a href="http://www.nuget.org/packages/Napalm684.Owin.LocaleLoader/">nuget package</a>
 <br/>
 
 Now let's write some code!
