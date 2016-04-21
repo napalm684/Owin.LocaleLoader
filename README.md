@@ -24,6 +24,8 @@ Now let's write some code!
 
 ### Browser Accept-Language Based
 
+Install the <a href="http://www.nuget.org/packages/Napalm684.Owin.LocaleLoader/">nuget package</a>
+
 #### Setup
 
 ```
