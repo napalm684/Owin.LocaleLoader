@@ -44,7 +44,7 @@ namespace Napalm684.Owin.LocaleLoader
                 if (Options.DependencyResolver == null)
                     UtilizeBrowsersLocale(context.Request, x);
                 else
-                    UtilizeServicesLocale(context.Request, x, GetParameters(context.Authentication.User.Identity.Name, Options.Parameters));
+                    UtilizeServicesLocale(context.Request, x, GetParameters(context.Authentication.User?.Identity.Name, Options.Parameters));
             });
 
             await Next.Invoke(context);

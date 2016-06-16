@@ -65,7 +65,7 @@ app.UseLocaleLoader(new LocaleLoaderOptions
     LocaleMappings = new Dictionary<string, string>()
     {
         { "script1.js", "script1-{0}.js" },
-        { "script1.js", "script1-{0}.js" }
+        { "script2.js", "script2-{0}.js" }
         //Etc
     }
 });

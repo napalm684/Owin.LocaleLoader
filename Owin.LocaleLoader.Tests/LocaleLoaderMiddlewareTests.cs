@@ -204,5 +204,46 @@ namespace Napalm684.Owin.LocaleLoader.Tests
                 Assert.AreEqual(LocaleLoaderConstants.FilePath + LocaleLoaderConstants.UnmappedPlaceholder, await response.Content.ReadAsStringAsync());
             }
         }
+
+        /// <summary>
+        /// Test making a request that is not logged in to ensure null exception does not occur when
+        /// passing the user name parameter to the locale service
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Task LocaleLoaderMiddleware_NullAuthentication()
+        {
+            //Arrange
+            var resolver = A.Fake<IDependencyResolver>();
+            A.CallTo(() => resolver.GetService(typeof(ILocaleService))).Returns(_fakeLocaleService);
+
+            using (var server = TestServer.Create(app =>
+            {
+                app.UseLocaleLoader(new LocaleLoaderOptions
+                {
+                    LocaleMappings =
+                    {
+                        { LocaleLoaderConstants.Placeholder, LocaleLoaderConstants.Actual }
+                    },
+                    DependencyResolver = resolver
+                });
+
+                app.Run(async ctx =>
+                {
+                    await ctx.Response.WriteAsync(ctx.Request.Path.Value);
+                });
+            }))
+            {
+                //Act
+                HttpResponseMessage response =
+                    await server.CreateRequest(LocaleLoaderConstants.FilePath + LocaleLoaderConstants.Placeholder)
+                                    .AddHeader(LocaleLoaderConstants.AcceptLanguge, LocaleLoaderConstants.FullLocale)
+                                    .GetAsync();
+
+                //Assert
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+                Assert.AreEqual(LocaleLoaderConstants.FilePath + String.Format(LocaleLoaderConstants.Actual, LocaleLoaderConstants.LocaleSpecific), await response.Content.ReadAsStringAsync());
+            }
+        }
     }
 }

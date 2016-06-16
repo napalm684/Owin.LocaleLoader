@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Napalm684.Owin.LocaleLoader</id>
-    <version>1.0.0.0</version>
+    <version>1.0.0.1</version>
     <title>Owin.LocaleLoader</title>
     <authors>Shawn Vause</authors>
     <owners>Shawn Vause</owners>
@@ -11,7 +11,7 @@
     <iconUrl>https://raw.githubusercontent.com/napalm684/Owin.LocaleLoader/master/Owin.LocaleLoader.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>OWIN Middleware component to replace generic Http Requested files with locale specific files</description>
-    <releaseNotes>Initial Version</releaseNotes>
+    <releaseNotes>Corrections to handle un-authenticated user scenario</releaseNotes>
     <copyright>Shawn Vause 2016</copyright>
     <tags>owin locale loader middleware</tags>
     <dependencies>
